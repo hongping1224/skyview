@@ -9,7 +9,7 @@ import (
 )
 
 func GenerateMainMenu(w fyne.Window) {
-	menu := fyne.NewMenu("File",
+	menu := fyne.NewMenu("File測試",
 		fyne.NewMenuItem("Open", func() { OpenShapeFile(w) }),
 		fyne.NewMenuItemSeparator(),
 		fyne.NewMenuItem("About", func() { fmt.Println("About") }))

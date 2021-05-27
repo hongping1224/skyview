@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -14,6 +16,9 @@ var (
 )
 
 func main() {
+
+	os.Setenv("FYNE_FONT", "./resources/font/wt014.ttf")
+
 	a := app.NewWithID(appID)
 	w := a.NewWindow(windowName)
 	ui.GenerateMainMenu(w)

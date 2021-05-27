@@ -7,10 +7,11 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
+
 )
 
 func GeneratePointTable(w fyne.Window) fyne.CanvasObject {
-	splitContainer := container.NewVSplit(widget.NewLabel("found image"), widget.NewLabel("entrydata"))
+	splitContainer := container.NewVSplit(widget.NewLabel("測試found image"), widget.NewLabel("entrydata"))
 	splitContainer.SetOffset(0.5)
 	datatable := generateSHPTableCanvas(w, nil)
 	splitContainer2 := container.NewHSplit(datatable, splitContainer)
