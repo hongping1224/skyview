@@ -27,6 +27,5 @@ func main() {
 	appTabs := container.NewAppTabs(container.NewTabItem("Data", splitContainer), container.NewTabItem("Wrong Entry", splitContainer2))
 	w.Resize(fyne.NewSize(800, 800))
 	w.SetContent(appTabs)
-
 	w.ShowAndRun()
 }
