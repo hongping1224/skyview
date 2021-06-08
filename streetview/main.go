@@ -95,8 +95,12 @@ func openStreetView(input string) error {
 }
 
 func decodeCoordinate(input string) (string, error) {
-	input = strings.ReplaceAll(input, " ", "")
+	input = strings.ReplaceAll(input, ",", "")
 	input = strings.ReplaceAll(input, "\n", "")
+	for strings.Contains(input, "  ") {
+		input = strings.ReplaceAll(input, "  ", " ")
+	}
+	input = strings.ReplaceAll(input, " ", ",")
 	s := strings.Split(input, ",")
 	if len(s) != 2 {
 		return "", errors.New("format error")
