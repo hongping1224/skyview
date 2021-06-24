@@ -97,7 +97,7 @@ func buttonPressNative() {
 		labelStirng.Set("Format Error, Example:\n169,885.900  2,544,297.055")
 		return
 	}
-	cmd := exec.Command("start", url)
+	cmd := exec.Command("cmd", "/c", "start", url)
 
 	err = cmd.Run()
 
