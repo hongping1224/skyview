@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
+	"os/exec"
 	"strconv"
 	"strings"
 
@@ -55,8 +57,11 @@ func main() {
 	a := app.NewWithID(appID)
 	w := a.NewWindow(windowName)
 
-	button := widget.NewButton("Open Street View", func() {
+	button := widget.NewButton("Open WebView", func() {
 		buttonPress()
+	})
+	button2 := widget.NewButton("Open Native", func() {
+		buttonPressNative()
 	})
 
 	label := widget.NewLabelWithData(labelStirng)
@@ -65,6 +70,7 @@ func main() {
 		entry,
 		label,
 		button,
+		button2,
 	))
 
 	w.Resize(fyne.NewSize(300, 130))
@@ -77,10 +83,27 @@ func buttonPress() {
 	url, err := decodeCoordinate(s)
 	labelStirng.Set("")
 	if err != nil {
-		labelStirng.Set("Format Error, Example:\n169885.900, 2544297.055")
+		labelStirng.Set("Format Error, Example:\n169,885.900  2,544,297.055")
 		return
 	}
 	go openStreetView(url)
+}
+
+func buttonPressNative() {
+	s, _ := entryString.Get()
+	url, err := decodeCoordinate(s)
+	labelStirng.Set("")
+	if err != nil {
+		labelStirng.Set("Format Error, Example:\n169,885.900  2,544,297.055")
+		return
+	}
+	cmd := exec.Command("start", url)
+
+	err = cmd.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func openStreetView(input string) error {
