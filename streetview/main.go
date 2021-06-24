@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -22,6 +21,7 @@ var (
 	windowName  = "Street View"
 	entryString = binding.NewString()
 	labelStirng = binding.NewString()
+	useNative   = false
 )
 
 type enterEntry struct {
@@ -57,20 +57,19 @@ func main() {
 	a := app.NewWithID(appID)
 	w := a.NewWindow(windowName)
 
-	button := widget.NewButton("Open WebView", func() {
+	button := widget.NewButton("Open Street View", func() {
 		buttonPress()
 	})
-	button2 := widget.NewButton("Open Native", func() {
-		buttonPressNative()
-	})
 
+	usenative := binding.BindBool(&useNative)
+	toggle := widget.NewCheckWithData("Use Native", usenative)
 	label := widget.NewLabelWithData(labelStirng)
 	entry := newEnterEntryWithData(entryString)
 	w.SetContent(container.NewVBox(
 		entry,
 		label,
+		toggle,
 		button,
-		button2,
 	))
 
 	w.Resize(fyne.NewSize(300, 130))
@@ -86,24 +85,19 @@ func buttonPress() {
 		labelStirng.Set("Format Error, Example:\n169,885.900  2,544,297.055")
 		return
 	}
+	if useNative {
+		go openSteetViewNative(url)
+		return
+	}
 	go openStreetView(url)
 }
 
-func buttonPressNative() {
-	s, _ := entryString.Get()
-	url, err := decodeCoordinate(s)
-	labelStirng.Set("")
-	if err != nil {
-		labelStirng.Set("Format Error, Example:\n169,885.900  2,544,297.055")
-		return
-	}
-	cmd := exec.Command("cmd", "/c", "start", url)
+func openSteetViewNative(input string) error {
+	cmd := exec.Command("cmd", "/c", "start", input)
 
-	err = cmd.Run()
+	err := cmd.Run()
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
 
 func openStreetView(input string) error {
